@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
+from twilio.twiml.voice_response import VoiceResponse, Say
 
 app = Flask(__name__)
 
@@ -24,7 +25,9 @@ def sms_reply():
         # Add a picture message
         msg.media("https://farm8.staticflickr.com/7090/6941316406_80b4d6d50e_z_d.jpg")
     elif body == 'when':
-        msg = resp.message("The Robots are coming! Head for the hills!")
+        resp = VoiceResponse()
+        resp.say('The Robots are coming! Head for the hills!')
+        # msg = resp.message("The Robots are coming! Head for the hills!")
     elif body == 'hi':
         msg = resp.message("hi salva!")
         msg.media("https://scontent.fsin10-1.fna.fbcdn.net/v/t1.6435-9/134744884_2836624303292522_2481575298273072520_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Kcglr8XTHt4AX-mM1_q&_nc_ht=scontent.fsin10-1.fna&oh=97e1c7f6118d75d94d6392435aabb5c9&oe=60A38F87")
