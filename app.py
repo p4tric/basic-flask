@@ -20,15 +20,16 @@ def sms_reply():
     # Determine the right reply for this message
     if body == 'hello':
         msg = resp.message("Hi!")
+        msg.media("https://media4.giphy.com/media/S6CCUz7PfIQen90pQI/source.gif")
     elif body == 'bye':
         msg = resp.message("Goodbye")
         # Add a picture message
-        msg.media("https://farm8.staticflickr.com/7090/6941316406_80b4d6d50e_z_d.jpg")
+        msg.media("https://media0.giphy.com/media/JSqYOfOlw7iIQsyS8s/giphy.gif")
     elif body == 'when':
-        resp = VoiceResponse()
-        resp.say('The Robots are coming! Head for the hills!')
-        # msg = resp.message("The Robots are coming! Head for the hills!")
-    elif body == 'hi':
+        #resp = VoiceResponse()
+        #resp.say('The Robots are coming! Head for the hills!')
+        msg = resp.message("The Robots are coming! Head for the hills!")
+    elif body == 'hi bangboy!':
         msg = resp.message("hi salva!")
         msg.media("https://scontent.fsin10-1.fna.fbcdn.net/v/t1.6435-9/134744884_2836624303292522_2481575298273072520_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Kcglr8XTHt4AX-mM1_q&_nc_ht=scontent.fsin10-1.fna&oh=97e1c7f6118d75d94d6392435aabb5c9&oe=60A38F87")
 
