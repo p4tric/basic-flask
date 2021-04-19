@@ -31,7 +31,7 @@ def sms_reply():
         msg = resp.message("The Robots are coming! Head for the hills!")
         msg.media("https://images.pexels.com/photos/2085831/pexels-photo-2085831.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500")
     elif body == 'hi bangboy!':
-        msg = resp.message("hi salva!")
+        msg = resp.message("hi!")
         msg.media("https://scontent.fsin10-1.fna.fbcdn.net/v/t1.6435-9/134744884_2836624303292522_2481575298273072520_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Kcglr8XTHt4AX-mM1_q&_nc_ht=scontent.fsin10-1.fna&oh=97e1c7f6118d75d94d6392435aabb5c9&oe=60A38F87")
     else:
         msg = resp.message("Indeed.")
