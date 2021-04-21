@@ -14,9 +14,8 @@ if os.path.exists(os.getcwd() + '/config.json'):
         configData = json.load(f)
 else:
     configTemplate = {
-        "API_ID": "",
-        "API_HASH": "",
-        "BOT_TOKEN": ""
+        "BOT_TOKEN": "",
+        "CMC_TOKEN": ""
     }
 
     with open(os.getcwd() + '/config.json', 'w+') as f:
@@ -50,7 +49,7 @@ def parse_msg(msg):
 
 def send_msg(chat_id, text='You chinese?'):
     url = 'https://api.telegram.org/bot{bot_token}/sendMessage'
-    payload = { chat_id, text }
+    payload = { 'chat_id': chat_id, 'text': text }
 
     r = requests.post(url, json=payload)
     return r

@@ -1,10 +1,4 @@
 {
-  "API_ID": "5608883",
-  "API_HASH": "38d90ca84d2b55bec373e35e48339488",
   "BOT_TOKEN": "1757548968:AAG3LoAalylJSb-KzMFWgSrjb5PyQl-mkb4",
-  "GET_IP_URL": "http://bot.whatismyipaddress.com/",
-  "PROXY_URL": "",
-  "PAYMENTS_PROVIDER_TOKEN": "123456789:TEST:1422",
-  "PHONE_NUMBER": "+6591775293",
   "CMC_TOKEN": "fb3f68a5-b413-4c4b-8d34-ce963f6642da"
 }
