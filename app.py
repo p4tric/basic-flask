@@ -1,8 +1,83 @@
-from flask import Flask, request, redirect
+import json
+import os
+import re
+import requests
+
+from dotenv import load_dotenv
+from flask import Flask, Response, request, redirect
+
 from twilio.twiml.messaging_response import MessagingResponse
 from twilio.twiml.voice_response import VoiceResponse, Say
 
+if os.path.exists(os.getcwd() + '/config.json'):
+    with open('./config.json') as f:
+        configData = json.load(f)
+else:
+    configTemplate = {
+        "API_ID": "",
+        "API_HASH": "",
+        "BOT_TOKEN": ""
+    }
+
+    with open(os.getcwd() + '/config.json', 'w+') as f:
+        json.dump(configTemplate, f)
+
+load_dotenv()
+
+bot_token = configData['BOT_TOKEN']
+cmc_token = configData['CMC_TOKEN']
+
 app = Flask(__name__)
+
+def write_json(data, filename='response.json'):
+    with open(filename, 'w') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+
+def parse_msg(msg):
+    chat_id = msg['message']['chat']['id']
+    msg_txt = msg['message']['text']
+
+    pattern = r'/[a-zA-Z]{2-4}'
+    ticker = re.findall(pattern, msg_txt)
+    if ticker:
+        symbol = ticker[0][1:] # /btc ==> btc
+    else:
+        symbol = ''
+
+    return chat_id, symbol
+
+
+def send_msg(chat_id, text='You chinese?'):
+    url = 'https://api.telegram.org/bot{bot_token}/sendMessage'
+    payload = { chat_id, text }
+
+    r = requests.post(url, json=payload)
+    return r
+
+
+def get_cmc_data(crypto):
+    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
+    params = { 'symbol': crypto, 'convert': 'USD' }
+    headers = { 'X-CMC_PRO_API_KEY': cmc_token }
+
+
+@app.route("/telegram", methods=['GET', 'POST'])
+def zmz_reply():
+    if request.method == 'POST':
+        msg = request.get_json()
+        chat_id, symbol = parse_msg(msg)
+
+        if not symbol:
+            send_msg(chat_id, 'Dope data')
+            return Response('Ok', status=200)
+
+        price = get_cmc_data(symbol)
+        send_msg(chat_id, price)
+        write_json(msg, 'telegram_request.json')
+        return Response('Ok', status=200)
+    else:
+        return '<h1>Hapichair Bot</h1>'
 
 @app.route("/whatsapp", methods=['GET', 'POST'])
 def sms_reply():
@@ -15,7 +90,6 @@ def sms_reply():
 
     # Add a message
     # resp.message("The Robots are coming! Head for the hills!")
-
 
     # Determine the right reply for this message
     if body == 'hello':
