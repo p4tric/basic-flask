@@ -37,20 +37,22 @@ def parse_msg(msg):
     chat_id = msg['message']['chat']['id']
     msg_txt = msg['message']['text']
 
+    print('[parse_msg] ' + chat_id + ' ' + msg_txt)
     pattern = r'/[a-zA-Z]{2-4}'
     ticker = re.findall(pattern, msg_txt)
     if ticker:
         symbol = ticker[0][1:] # /btc ==> btc
+        print("[ticker1] " + symbol)
     else:
         symbol = ''
-
+        print("[ticker2] " + symbol)
     return chat_id, symbol
 
 
 def send_msg(chat_id, text='You chinese?'):
     url = 'https://api.telegram.org/bot{bot_token}/sendMessage'
-    payload = { 'chat_id': chat_id, 'text': text }
-
+    payload = {'chat_id': chat_id, 'text': text}
+    print('[send_msg] ' + payload)
     r = requests.post(url, json=payload)
     return r
 
@@ -60,6 +62,11 @@ def get_cmc_data(crypto):
     params = { 'symbol': crypto, 'convert': 'USD' }
     headers = { 'X-CMC_PRO_API_KEY': cmc_token }
 
+    r = requests.get(url, headers=headers, params=params).json()
+
+    price = r['data'][crypto]['quote']['USD']['price']
+
+    return price
 
 @app.route("/telegram", methods=['GET', 'POST'])
 def zmz_reply():
