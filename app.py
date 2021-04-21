@@ -63,22 +63,26 @@ def get_cmc_data(crypto):
 
 @app.route("/telegram", methods=['GET', 'POST'])
 def zmz_reply():
-    print('[TELEGRAM] '.request.method)
+    print(request.method)
     if request.method == 'POST':
         msg = request.get_json()
-        print('[MSG] '.msg)
+        print(msg)
 
         chat_id, symbol = parse_msg(msg)
+        print(chat_id)
+        print(symbol)
 
         if not symbol:
             send_msg(chat_id, 'Dope data')
             return Response('Ok', status=200)
 
         price = get_cmc_data(symbol)
+        print(price)
         send_msg(chat_id, price)
         # write_json(msg, 'telegram_request.json')
         return Response('Ok', status=200)
     else:
+        print('else H1')
         return '<h1>Hapichair Bot</h1>'
 
 @app.route("/whatsapp", methods=['GET', 'POST'])
